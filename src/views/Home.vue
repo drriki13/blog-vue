@@ -15,10 +15,10 @@
           <div class="col p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">Категория</strong>
             <h4 class="mb-0">{{ post.title }}</h4>
-            <p class="card-text mb-auto">{{ post.description }}</p>
+            <p class="card-text mb-auto">description</p>
             <div class="row">
               <div class="col-md-6">
-                <div class="mb-1 text-muted">{{ post.publishedAt }}</div>
+                <div class="mb-1 text-muted">{{ post.release_year }}</div>
               </div>
               <div class="col-md-6">
                 <a class="mb-1 text-muted">{{ post.author }}</a>
@@ -27,12 +27,19 @@
             <a href="#" class="stretched-link">Продолжить читение...</a>
           </div>
           <div class="col-auto d-none d-lg-block">
-            <img :src="post.urlToImage" alt="img" style="width: 200px; height: 250px;">
+            <img :src="post.cover_image" alt="img" style="width: 200px; height: 250px;">
           </div>
         </div>
       </div>
     </div>
 
+    <b-pagination
+        align="center"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        @input="getPosts(currentPage)"
+    ></b-pagination>
   </div>
 </template>
 
@@ -44,26 +51,37 @@ export default {
   data() {
     return {
       isLoading: true,
-      key: '1afaa4fa78554917bb023d4e25a41688',
+      perPage: 20,
+      rows: 50,
+      currentPage: 1,
+      accessToken: '100-token',
       posts: [],
       errors: []
     }
   },
+  methods: {
+    getPosts (page) {
+      window.scrollTo(0, 0);
+      axios.get('http://vue-app.local/books', {
+        params: {
+          page: page ?? this.currentPage,
+          'access-token': this.accessToken
+        }
+      })
+          .then(response => {
+            this.posts = response.data.items;
+            this.perPage = response.data._meta.perPage;
+            this.rows = response.data._meta.totalCount;
+          })
+          .catch(e => {
+            this.errors.push(e)
+          }).finally(() => {
+        this.isLoading = false;
+      })
+    }
+  },
   mounted() {
-    axios.get('https://newsapi.org/v2/top-headlines', {
-      params: {
-        country: 'ru',
-        apiKey: this.key
-      }
-    })
-    .then(response => {
-      this.posts = response.data.articles;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    }).finally(() => {
-      this.isLoading = false;
-    })
+    this.getPosts()
   }
 }
 </script>
