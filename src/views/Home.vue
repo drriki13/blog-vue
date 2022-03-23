@@ -10,30 +10,31 @@
     </div>
 
     <div class="row mb-2">
-      <div class="col-md-6" v-for="post in posts" :key="post.author">
+      <div class="col-md-6" v-for="post in posts" :key="post.id">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">Категория</strong>
+            <strong class="d-inline-block mb-2 text-primary">Категория: {{ post.category.title }}</strong>
             <h4 class="mb-0">{{ post.title }}</h4>
-            <p class="card-text mb-auto">description</p>
+            <p class="card-text mb-auto">{{ post.desc }}</p>
             <div class="row">
               <div class="col-md-6">
-                <div class="mb-1 text-muted">{{ post.release_year }}</div>
+                <div class="mb-1 text-muted">{{ post.created_at }}</div>
               </div>
               <div class="col-md-6">
                 <a class="mb-1 text-muted">{{ post.author }}</a>
               </div>
             </div>
-            <a href="#" class="stretched-link">Продолжить читение...</a>
+            <a class="stretched-link" @click="$router.push('/post/' + post.id)">Продолжить читение...</a>
           </div>
           <div class="col-auto d-none d-lg-block">
-            <img :src="post.cover_image" alt="img" style="width: 200px; height: 250px;">
+            <img :src="post.img" alt="img" style="width: 200px; height: 250px;">
           </div>
         </div>
       </div>
     </div>
 
     <b-pagination
+        v-if="rows > 1"
         align="center"
         v-model="currentPage"
         :total-rows="rows"
@@ -54,7 +55,7 @@ export default {
       perPage: 20,
       rows: 50,
       currentPage: 1,
-      accessToken: '100-token',
+      accessToken: 'e87687d2f9341febedda754d99c2afb4',
       posts: [],
       errors: []
     }
@@ -62,7 +63,7 @@ export default {
   methods: {
     getPosts (page) {
       window.scrollTo(0, 0);
-      axios.get('http://vue-app.local/books', {
+      axios.get('http://blog.local/posts', {
         params: {
           page: page ?? this.currentPage,
           'access-token': this.accessToken
