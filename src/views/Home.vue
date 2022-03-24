@@ -45,44 +45,31 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "HomePage",
   data() {
     return {
-      isLoading: true,
-      perPage: 20,
-      rows: 50,
-      currentPage: 1,
-      accessToken: 'e87687d2f9341febedda754d99c2afb4',
-      posts: [],
-      errors: []
+
     }
+  },
+  computed: {
+    ...mapState([
+      'isLoading',
+      'posts',
+      'currentPage',
+      'perPage',
+      'rows'
+    ])
   },
   methods: {
-    getPosts (page) {
-      window.scrollTo(0, 0);
-      axios.get('http://blog.local/posts', {
-        params: {
-          page: page ?? this.currentPage,
-          'access-token': this.accessToken
-        }
-      })
-          .then(response => {
-            this.posts = response.data.items;
-            this.perPage = response.data._meta.perPage;
-            this.rows = response.data._meta.totalCount;
-          })
-          .catch(e => {
-            this.errors.push(e)
-          }).finally(() => {
-        this.isLoading = false;
-      })
-    }
+    ...mapActions([
+        'getPosts'
+    ])
   },
   mounted() {
-    this.getPosts()
+    this.getPosts({page: 1})
   }
 }
 </script>
