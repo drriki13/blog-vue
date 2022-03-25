@@ -9,8 +9,8 @@
       </div>
 
       <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3"><a href="https://github.com/drriki13/"><b-icon-github /></a></li>
-        <li class="ms-3"><a href="https://instagram.com/alekasndrbessonov777"><b-icon-instagram /></a></li>
+        <li class="ms-3"><a href="https://github.com/drriki13/" target="_blank"><b-icon-github /></a></li>
+        <li class="ms-3"><a href="https://instagram.com/alekasndrbessonov777" target="_blank"><b-icon-instagram /></a></li>
       </ul>
     </footer>
   </div>

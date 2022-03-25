@@ -36,7 +36,7 @@
     <b-pagination
         v-if="rows > 1"
         align="center"
-        v-model="currentPage"
+        :value="currentPage"
         :total-rows="rows"
         :per-page="perPage"
         @input="getPosts(currentPage)"
@@ -49,11 +49,6 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "HomePage",
-  data() {
-    return {
-
-    }
-  },
   computed: {
     ...mapState([
       'isLoading',

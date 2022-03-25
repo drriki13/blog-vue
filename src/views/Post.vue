@@ -68,6 +68,5 @@ export default {
 <style>
 .card-img {
   object-fit: cover;
-
 }
 </style>

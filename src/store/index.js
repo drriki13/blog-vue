@@ -34,6 +34,7 @@ export default new Vuex.Store({
     },
     actions: {
         getPosts({state, commit}, params) {
+            console.log(params);
             window.scrollTo(0, 0);
             axios.get('http://blog.local/posts', {
                 params: {
@@ -44,7 +45,7 @@ export default new Vuex.Store({
                 commit('loadPosts', {
                     posts: response.data.items,
                     perPage: response.data._meta.perPage,
-                    rows: response.data._meta.totalCount
+                    rows: response.data._meta.totalCount,
                 })
             }).catch(e => {
                 commit('writeErrors', e)
